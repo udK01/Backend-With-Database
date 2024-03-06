@@ -33,3 +33,8 @@ export async function getUser(id) {
   const [rows] = await db.query(`SELECT * FROM users WHERE userID = ?`, [id]);
   return rows[0];
 }
+
+export async function deleteUser(id) {
+  await db.query(`DELETE FROM users WHERE userID = ?`, [id]);
+  console.log(`User Deleted!`);
+}

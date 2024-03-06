@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { createUser, getUsers, getUser } from "./database.js"; // Import database methods
+import { createUser, deleteUser, getUsers, getUser } from "./database.js"; // Import database methods
 
 const PORT = 8080;
 const app = express();
@@ -41,6 +41,18 @@ app.get("/api/users/:id", async (req, res) => {
   } catch (error) {
     console.error("Error getting user:", error);
     res.status(500).json({ error: "Error getting user" });
+  }
+});
+
+app.delete("/api/users/:id", async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    await deleteUser(userId);
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ error: "Error deleting user" });
   }
 });
 
