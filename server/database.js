@@ -38,3 +38,10 @@ export async function deleteUser(id) {
   await db.query(`DELETE FROM users WHERE userID = ?`, [id]);
   console.log(`User Deleted!`);
 }
+
+export async function updateUser(id, username, password) {
+  await db.query(
+    `UPDATE users SET username = ?, password = ? WHERE userID = ?`,
+    [username, password, id]
+  );
+}

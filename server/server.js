@@ -1,6 +1,12 @@
 import express from "express";
 import cors from "cors";
-import { createUser, deleteUser, getUsers, getUser } from "./database.js"; // Import database methods
+import {
+  createUser,
+  deleteUser,
+  updateUser,
+  getUsers,
+  getUser,
+} from "./database.js"; // Import database methods
 
 const PORT = 8080;
 const app = express();
@@ -53,6 +59,19 @@ app.delete("/api/users/:id", async (req, res) => {
   } catch (error) {
     console.error("Error deleting user:", error);
     res.status(500).json({ error: "Error deleting user" });
+  }
+});
+
+app.put("/api/users/:id", async (req, res) => {
+  const userId = req.params.id;
+  const { username, password } = req.body;
+
+  try {
+    await updateUser(userId, username, password);
+    res.status(200).json({ message: "User updated successfully" });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ error: "Error updating user" });
   }
 });
 

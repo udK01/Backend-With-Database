@@ -4,8 +4,14 @@ import "./App.css";
 
 export default function App() {
   const [users, setUsers] = useState([]);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [edit, setEdit] = useState(null);
+  const [editedUsername, setEditedUsername] = useState("");
+  const [editedPassword, setEditedPassword] = useState("");
+
   const [listChange, setListChange] = useState("");
 
   const [loading, setLoading] = useState(true);
@@ -59,12 +65,47 @@ export default function App() {
           "Content-Type": "application/json",
         },
       })
-      .then((response) => {
+      .then(() => {
         setListChange(true);
       })
       .catch((error) => {
         console.log("Error deleting user:", error);
       });
+  };
+
+  const saveField = (id, originalUsername, originalPassword) => {
+    if (editedUsername !== "" || editedPassword !== "") {
+      axios
+        .put(
+          `/api/users/${id}`,
+          {
+            username: editedUsername === "" ? originalUsername : editedUsername,
+            password: editedPassword === "" ? originalPassword : editedPassword,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then(() => {
+          setListChange(true);
+          setEditedUsername("");
+          setEditedPassword("");
+          setEdit(null);
+        })
+        .catch((error) => {
+          console.log("Error updating users:", error);
+        });
+    }
+
+    // Reset Edit View.
+    setEdit(null);
+  };
+
+  // Begins Edit View.
+  const handleEdit = (index) => {
+    setEdit(index);
   };
 
   return (
@@ -101,14 +142,50 @@ export default function App() {
         ) : (
           users.map((user, i) => (
             <div className="row" key={i}>
-              <div className="cell">{user.username}</div>
-              <div className="cell">{user.password}</div>
-              <button
-                className="deleteBtn"
-                onClick={() => deleteField(user.userID)}
-              >
-                Delete
-              </button>
+              {edit === i ? (
+                <>
+                  <input
+                    className="cell"
+                    placeholder={user.username}
+                    value={editedUsername}
+                    onChange={(event) => setEditedUsername(event.target.value)}
+                  />
+                  <input
+                    className="cell"
+                    placeholder={user.password}
+                    value={editedPassword}
+                    onChange={(event) => setEditedPassword(event.target.value)}
+                  />
+                </>
+              ) : (
+                <>
+                  <div className="cell">{user.username}</div>
+                  <div className="cell">{user.password}</div>
+                </>
+              )}
+
+              <div className="btn-container">
+                <button className="edit-btn" onClick={() => handleEdit(i)}>
+                  Edit
+                </button>
+                {edit === i ? (
+                  <button
+                    className="save-btn"
+                    onClick={() =>
+                      saveField(user.userID, user.username, user.password)
+                    }
+                  >
+                    Save
+                  </button>
+                ) : (
+                  <button
+                    className="delete-btn"
+                    onClick={() => deleteField(user.userID)}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
             </div>
           ))
         )}
