@@ -6,6 +6,11 @@ import {
   updateUser,
   getUsers,
   getUser,
+  createAccount,
+  addTransaction,
+  getTransaction,
+  getTransactions,
+  deleteTransaction,
 } from "./database.js"; // Import database methods
 
 const PORT = 8080;

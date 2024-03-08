@@ -25,13 +25,13 @@ export async function createUser(username, password) {
 }
 
 export async function getUsers() {
-  const [rows] = await db.query("SELECT * FROM users");
-  return rows;
+  const [x] = await db.query("SELECT * FROM users");
+  return x;
 }
 
 export async function getUser(id) {
-  const [rows] = await db.query(`SELECT * FROM users WHERE userID = ?`, [id]);
-  return rows[0];
+  const [x] = await db.query(`SELECT * FROM users WHERE userID = ?`, [id]);
+  return x[0];
 }
 
 export async function deleteUser(id) {
@@ -67,7 +67,7 @@ async function accountExists(accountNumber) {
   return x.length !== 0;
 }
 
-async function insertUniqueAccount(username, password) {
+export async function createAccount(username, password) {
   try {
     let accountNumber = generateAccountNumber();
 
@@ -82,3 +82,48 @@ async function insertUniqueAccount(username, password) {
 }
 
 // Transaction Management Code
+
+export async function addTransaction(
+  account_number,
+  transaction_type,
+  transaction_text,
+  transaction_amount,
+  transaction_date,
+  transaction_source
+) {
+  try {
+    await db.query(
+      "INSERT INTO Transactions (account_number, transaction_type, transaction_text, transaction_amount, transaction_date, transaction_source) VALUES (?, ?, ?, ?, ?, ?)",
+      [
+        account_number,
+        transaction_type,
+        transaction_text,
+        transaction_amount,
+        transaction_date,
+        transaction_source,
+      ]
+    );
+    console.log(
+      `Added transaction: ${transaction_amount} into ${account_number}`
+    );
+  } catch (error) {
+    console.log("Error adding transaction: ", error);
+  }
+}
+
+export async function getTransactions() {
+  const [x] = await db.query("SELECT * FROM transactions");
+  return x;
+}
+
+export async function getTransaction(id) {
+  const [x] = await db.query(
+    `SELECT * FROM transactions WHERE transaction_id = ?`,
+    [id]
+  );
+  return x[0];
+}
+
+export async function deleteTransaction(id) {
+  await db.query(`DELETE FROM transactions WHERE transaction_id = ?`, [id]);
+}
