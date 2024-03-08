@@ -36,7 +36,6 @@ export async function getUser(id) {
 
 export async function deleteUser(id) {
   await db.query(`DELETE FROM users WHERE userID = ?`, [id]);
-  console.log(`User Deleted!`);
 }
 
 export async function updateUser(id, username, password) {
@@ -45,3 +44,41 @@ export async function updateUser(id, username, password) {
     [username, password, id]
   );
 }
+
+// Banking Test
+
+// Account Management Code
+function generateAccountNumber() {
+  let accountNumber;
+  let isUnique = false;
+
+  while (!isUnique) {
+    accountNumber = Math.floor(1000000000 + Math.random() * 9000000000);
+    isUnique = accountExists(accountNumber);
+  }
+
+  return accountNumber;
+}
+
+async function accountExists(accountNumber) {
+  let [x] = await db.query("SELECT * FROM accounts WHERE account_number = ?", [
+    accountNumber,
+  ]);
+  return x.length !== 0;
+}
+
+async function insertUniqueAccount(username, password) {
+  try {
+    let accountNumber = generateAccountNumber();
+
+    await db.query(
+      "INSERT INTO Accounts (account_number, username, password) VALUES (?, ?, ?)",
+      [accountNumber, username, password]
+    );
+    console.log(`Account created for ${username}`);
+  } catch (error) {
+    console.log("Error adding account: ", error);
+  }
+}
+
+// Transaction Management Code
