@@ -1,0 +1,77 @@
+body {
+  display: flex;
+  min-height: 100vh;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+  color: white;
+  background-color: rgb(15, 39, 90);
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px;
+  padding-bottom: 0;
+  width: 400px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  width: inherit;
+  padding: 10px;
+}
+
+.input-container input {
+  flex: 1;
+  padding: 10px;
+  margin: 0.5rem 0;
+  padding: 1rem;
+  border: none;
+  border-radius: 20px;
+}
+
+.register-form button {
+  border: none;
+  padding: 20px;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: #9c88ff;
+  width: inherit;
+  margin: 0;
+}
+
+.link-btn {
+  border: none;
+  color: white;
+  background: none;
+  padding-top: 5px;
+  text-decoration: underline;
+}
+
+.register-form .labelAndError {
+  width: inherit;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.register-form label {
+  flex-grow: 1;
+  text-align: left;
+  /* padding-top: 0.25rem 0; */
+}
+
+.register-form .error {
+  padding: 10px;
+  color: white;
+  background-color: rgb(114, 10, 10);
+  border-radius: 20px;
+}
