@@ -7,6 +7,7 @@ import {
   getUsers,
   getUser,
   createAccount,
+  getAccount,
   addTransaction,
   getTransaction,
   getTransactions,
@@ -27,6 +28,29 @@ app.post("/api/users", async (req, res) => {
   } catch (error) {
     console.error("Error creating user:", error);
     res.status(500).json({ error: "Error creating user" });
+  }
+});
+
+app.post("/api/account", async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    await createAccount(username, password);
+  } catch (error) {
+    console.error("Error creating account:", error);
+    res.status(500).json({ error: "Error creating account" });
+  }
+});
+
+app.get("/api/account", async (req, res) => {
+  const { username, password } = req.query;
+
+  try {
+    const account = await getAccount(username, password);
+    console.log(account);
+    res.json(account);
+  } catch (error) {
+    console.error("Error getting account:", error);
+    res.status(500).json({ error: "Error getting account" });
   }
 });
 

@@ -81,6 +81,14 @@ export async function createAccount(username, password) {
   }
 }
 
+export async function getAccount(username, password) {
+  const [x] = await db.query(
+    "SELECT * FROM Accounts WHERE username = ? AND password = ?",
+    [username, password]
+  );
+  return x;
+}
+
 // Transaction Management Code
 
 export async function addTransaction(

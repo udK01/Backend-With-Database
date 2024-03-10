@@ -1,5 +1,6 @@
 import styles from "./Register.module.css";
 import { useState } from "react";
+import axios from "axios";
 
 export default function Register(props) {
   const [username, setUsername] = useState("");
@@ -77,7 +78,27 @@ export default function Register(props) {
   }
 
   async function saveData() {
-    console.log("Data Saved.");
+    let userData = { username: username, password: password };
+
+    try {
+      const response = await axios.post("/api/account", userData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200) {
+        setUsername("");
+        setPassword("");
+        setPassword2("");
+        props.onFormSwitch("Login");
+        console.log("Account created successfully");
+      } else {
+        console.error("Error creating account:", response.data);
+      }
+    } catch (error) {
+      console.error("Error creating account:", error);
+    }
   }
 
   function autoFill() {
@@ -88,70 +109,76 @@ export default function Register(props) {
 
   return (
     <>
-      <form
-        className={styles["register-form"]}
-        onSubmit={(e) => handleSubmit(e)}
-      >
-        <h1>Register</h1>
-        <div className={styles.labelAndError}>
-          <label htmlFor="username">Username</label>
-          {usernameError && <div className={styles.error}>{usernameError}</div>}
-        </div>
-        <div className={styles["input-container"]}>
-          <input
-            id="username"
-            type="text"
-            name="username"
-            value={username}
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
-            placeholder="your-username..."
-          />
-        </div>
-        <div className={styles.labelAndError}>
-          <label htmlFor="password">Password</label>
-          {passwordError && <div className={styles.error}>{passwordError}</div>}
-        </div>
-        <div className={styles["input-container"]}>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            placeholder="********"
-          />
-        </div>
-        <div className={styles.labelAndError}>
-          <label htmlFor="password2">Repeat Password</label>
-          {password2Error && (
-            <div className={styles.error}>{password2Error}</div>
-          )}
-        </div>
-        <div className={styles["input-container"]}>
-          <input
-            id="password2"
-            type="password"
-            name="password2"
-            value={password2}
-            onChange={(e) => {
-              setPassword2(e.target.value);
-            }}
-            placeholder="********"
-          />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-      <button
-        className={styles["link-btn"]}
-        onClick={() => props.onFormSwitch("Login")}
-      >
-        Already have an account? Login here.
-      </button>
-      <button onClick={autoFill}>Autofill</button>
+      <div className={styles["register-container"]}>
+        <form
+          className={styles["register-form"]}
+          onSubmit={(e) => handleSubmit(e)}
+        >
+          <h1>Register</h1>
+          <div className={styles.labelAndError}>
+            <label htmlFor="username">Username</label>
+            {usernameError && (
+              <div className={styles.error}>{usernameError}</div>
+            )}
+          </div>
+          <div className={styles["input-container"]}>
+            <input
+              id="username"
+              type="text"
+              name="username"
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+              placeholder="your-username..."
+            />
+          </div>
+          <div className={styles.labelAndError}>
+            <label htmlFor="password">Password</label>
+            {passwordError && (
+              <div className={styles.error}>{passwordError}</div>
+            )}
+          </div>
+          <div className={styles["input-container"]}>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              placeholder="********"
+            />
+          </div>
+          <div className={styles.labelAndError}>
+            <label htmlFor="password2">Repeat Password</label>
+            {password2Error && (
+              <div className={styles.error}>{password2Error}</div>
+            )}
+          </div>
+          <div className={styles["input-container"]}>
+            <input
+              id="password2"
+              type="password"
+              name="password2"
+              value={password2}
+              onChange={(e) => {
+                setPassword2(e.target.value);
+              }}
+              placeholder="********"
+            />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+        <button
+          className={styles["link-btn"]}
+          onClick={() => props.onFormSwitch("Login")}
+        >
+          Already have an account? Login here.
+        </button>
+        <button onClick={autoFill}>Autofill</button>
+      </div>
     </>
   );
 }
