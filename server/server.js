@@ -11,6 +11,7 @@ import {
   addTransaction,
   getTransaction,
   getTransactions,
+  getTransactionsFromUser,
   deleteTransaction,
 } from "./database.js"; // Import database methods
 
@@ -55,8 +56,10 @@ app.get("/api/account", async (req, res) => {
 });
 
 app.get("/api/transactions", async (req, res) => {
+  const account_number = req.query.account_number;
+
   try {
-    const transactions = await getTransactions();
+    const transactions = await getTransactionsFromUser(account_number);
     res.json(transactions);
   } catch (error) {
     console.error("Error fetching transactions:", error);

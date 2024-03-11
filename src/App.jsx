@@ -16,6 +16,10 @@ export default function App() {
     setUser(userData);
   }
 
+  function handleLogout() {
+    setUser([]);
+  }
+
   return (
     <>
       {user.length == 0 ? (
@@ -25,7 +29,7 @@ export default function App() {
           <Register onFormSwitch={toggleForm} />
         )
       ) : (
-        <Transactions user={user[0]} />
+        <Transactions user={user[0]} onLogout={handleLogout} />
       )}
     </>
   );

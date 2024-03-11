@@ -124,6 +124,14 @@ export async function getTransactions() {
   return x;
 }
 
+export async function getTransactionsFromUser(account_number) {
+  const [x] = await db.query(
+    "SELECT * FROM transactions WHERE account_number = ?",
+    [account_number]
+  );
+  return x;
+}
+
 export async function getTransaction(id) {
   const [x] = await db.query(
     `SELECT * FROM transactions WHERE transaction_id = ?`,
