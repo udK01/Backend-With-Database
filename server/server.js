@@ -35,6 +35,7 @@ app.post("/api/account", async (req, res) => {
   const { username, password } = req.body;
   try {
     await createAccount(username, password);
+    res.status(200).json();
   } catch (error) {
     console.error("Error creating account:", error);
     res.status(500).json({ error: "Error creating account" });
@@ -46,11 +47,20 @@ app.get("/api/account", async (req, res) => {
 
   try {
     const account = await getAccount(username, password);
-    console.log(account);
     res.json(account);
   } catch (error) {
     console.error("Error getting account:", error);
     res.status(500).json({ error: "Error getting account" });
+  }
+});
+
+app.get("/api/transactions", async (req, res) => {
+  try {
+    const transactions = await getTransactions();
+    res.json(transactions);
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    res.status(500).json({ error: "Error fetching transactions" });
   }
 });
 

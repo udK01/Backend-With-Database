@@ -1,5 +1,6 @@
 import { useState } from "react";
-import History from "./components/History/History";
+import History from "./components/UserHistory/History";
+import Transactions from "./TransactionHistory/Transactions";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 
@@ -24,7 +25,7 @@ export default function App() {
           <Register onFormSwitch={toggleForm} />
         )
       ) : (
-        <History />
+        <Transactions />
       )}
     </>
   );

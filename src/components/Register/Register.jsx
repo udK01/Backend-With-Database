@@ -27,7 +27,7 @@ export default function Register(props) {
     try {
       if (rangeCheck(username, USERNAME_LOWER, USERNAME_UPPER)) {
         if (passwordValidations(password, PASSWORD_LOWER, PASSWORD_UPPER)) {
-          await saveData();
+          saveData();
         }
       }
     } catch (error) {
@@ -77,28 +77,24 @@ export default function Register(props) {
     return containsUppercase && containsLowercase && containsDigit;
   }
 
-  async function saveData() {
+  function saveData() {
     let userData = { username: username, password: password };
 
-    try {
-      const response = await axios.post("/api/account", userData, {
+    axios
+      .post("/api/account", userData, {
         headers: {
           "Content-Type": "application/json",
         },
-      });
-
-      if (response.status === 200) {
+      })
+      .then(() => {
         setUsername("");
         setPassword("");
         setPassword2("");
         props.onFormSwitch("Login");
-        console.log("Account created successfully");
-      } else {
-        console.error("Error creating account:", response.data);
-      }
-    } catch (error) {
-      console.error("Error creating account:", error);
-    }
+      })
+      .catch((error) => {
+        console.error("Error creating account:", error);
+      });
   }
 
   function autoFill() {
