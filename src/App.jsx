@@ -5,27 +5,27 @@ import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 
 export default function App() {
-  const [loggedIn, setLoggedIn] = useState("");
+  const [user, setUser] = useState([]);
   const [currentForm, setCurrentForm] = useState("Login");
 
   const toggleForm = (formName) => {
     setCurrentForm(formName);
   };
 
-  function handleLogin(x) {
-    setLoggedIn(x);
+  function handleLogin(userData) {
+    setUser(userData);
   }
 
   return (
     <>
-      {loggedIn.length == 0 ? (
+      {user.length == 0 ? (
         currentForm === "Login" ? (
           <Login onFormSwitch={toggleForm} onLogin={handleLogin} />
         ) : (
           <Register onFormSwitch={toggleForm} />
         )
       ) : (
-        <Transactions />
+        <Transactions user={user[0]} />
       )}
     </>
   );

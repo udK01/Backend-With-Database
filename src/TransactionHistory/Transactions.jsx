@@ -1,7 +1,8 @@
+import styles from "./Transactions.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function Transactions() {
+export default function Transactions(props) {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
@@ -17,16 +18,31 @@ export default function Transactions() {
 
   return (
     <>
-      <div>Hello!</div>
-      {transactions.map((transaction, i) => (
-        <div key={i}>
-          <p>Transaction ID: {transaction.transaction_id}</p>
-          <p>Account Number: {transaction.account_number}</p>
-          <p>Transaction Type: {transaction.transaction_type}</p>
-          <p>Transaction Text: {transaction.transaction_text}</p>
-          <p>Transaction Amount: {transaction.transaction_amount}</p>
+      <div className={styles["container"]}>
+        <div className={styles["title"]}>
+          <div>Hello, {props.user.username}!</div>
+          <div>Account Number: {props.user.account_number}</div>
         </div>
-      ))}
+        {transactions.map((transaction, i) => (
+          <div key={i} className={styles["row"]}>
+            <p className={styles["cell"]}>
+              Transaction ID: {transaction.transaction_id}
+            </p>
+            <p className={styles["cell"]}>
+              Account Number: {transaction.account_number}
+            </p>
+            <p className={styles["cell"]}>
+              Transaction Type: {transaction.transaction_type}
+            </p>
+            <p className={styles["cell"]}>
+              Transaction Text: {transaction.transaction_text}
+            </p>
+            <p className={styles["cell"]}>
+              Transaction Amount: {transaction.transaction_amount}
+            </p>
+          </div>
+        ))}
+      </div>
     </>
   );
 }

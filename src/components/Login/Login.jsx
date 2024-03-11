@@ -19,8 +19,8 @@ export default function Login(props) {
           "Content-Type": "application/json",
         },
       })
-      .then(() => {
-        props.onLogin(username);
+      .then((response) => {
+        props.onLogin(response.data);
       })
       .catch((error) => {
         console.error("Error fetching account:", error);
