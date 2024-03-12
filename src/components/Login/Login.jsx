@@ -5,6 +5,11 @@ import axios from "axios";
 export default function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleInputChange = () => {
+    setIsChecked(!isChecked);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,7 +25,8 @@ export default function Login(props) {
         },
       })
       .then((response) => {
-        props.onLogin(response.data);
+        const rememberUser = document.getElementById("logged-in-btn").checked;
+        props.onLogin(response.data, rememberUser);
       })
       .catch((error) => {
         console.error("Error fetching account:", error);
@@ -54,7 +60,21 @@ export default function Login(props) {
               placeholder="********"
             />
           </div>
-          <button type="submit">Submit</button>
+          <div
+            className={styles["remain-logged-in-container"]}
+            onClick={handleInputChange}
+          >
+            <input
+              id="logged-in-btn"
+              type="radio"
+              checked={isChecked}
+              onChange={() => {}}
+            />
+            <label htmlFor="logged-in-btn">Remember Me!</label>
+          </div>
+          <button className={styles["submit"]} type="submit">
+            Submit
+          </button>
         </form>
         <button
           className={styles["link-btn"]}
