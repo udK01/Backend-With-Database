@@ -8,6 +8,7 @@ import {
   getUser,
   createAccount,
   getAccount,
+  getAccountNames,
   addTransaction,
   getTransaction,
   getTransactions,
@@ -52,6 +53,16 @@ app.get("/api/account", async (req, res) => {
   } catch (error) {
     console.error("Error getting account:", error);
     res.status(500).json({ error: "Error getting account" });
+  }
+});
+
+app.get("/api/accountNames", async (req, res) => {
+  try {
+    const accountNames = await getAccountNames();
+    res.json(accountNames);
+  } catch (error) {
+    console.error("Error getting account names:", error);
+    res.status(500).json({ error: "Error getting account names" });
   }
 });
 

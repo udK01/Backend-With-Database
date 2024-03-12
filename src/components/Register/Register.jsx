@@ -25,9 +25,12 @@ export default function Register(props) {
     setPassword2Error("");
 
     try {
-      if (rangeCheck(username, USERNAME_LOWER, USERNAME_UPPER)) {
+      if (rangeCheck(username, USERNAME_LOWER, USERNAME_UPPER, "Username")) {
         if (passwordValidations(password, PASSWORD_LOWER, PASSWORD_UPPER)) {
-          saveData();
+          const exists = await userExists(username);
+          if (!exists) {
+            saveData();
+          }
         }
       }
     } catch (error) {
@@ -35,18 +38,18 @@ export default function Register(props) {
     }
   };
 
-  function rangeCheck(input, lowerBound, upperBound) {
+  function rangeCheck(input, lowerBound, upperBound, object) {
     if (input.length >= lowerBound && input.length <= upperBound) {
       return true;
     }
     throw new Error(
-      `Username has to be between ${lowerBound} and ${upperBound}`
+      `${object} has to be between ${lowerBound} and ${upperBound}`
     );
   }
 
   function passwordValidations(input, lowerBound, upperBound) {
     try {
-      if (rangeCheck(input, lowerBound, upperBound)) {
+      if (rangeCheck(input, lowerBound, upperBound, "Password")) {
         if (input === password2) {
           if (validatePassword(password)) {
             return true;
@@ -75,6 +78,24 @@ export default function Register(props) {
     const containsDigit = digitRegex.test(password);
 
     return containsUppercase && containsLowercase && containsDigit;
+  }
+
+  function userExists(username) {
+    return axios
+      .get("/api/accountNames")
+      .then((response) => {
+        const existingUsers = response.data;
+        for (const existingUser of existingUsers) {
+          if (existingUser.username === username) {
+            throw new Error(`Username '${username}' is already taken.`);
+          }
+        }
+        return false;
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        throw error;
+      });
   }
 
   function saveData() {

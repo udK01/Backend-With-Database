@@ -89,6 +89,11 @@ export async function getAccount(username, password) {
   return x;
 }
 
+export async function getAccountNames() {
+  const [x] = await db.query("SELECT username FROM Accounts");
+  return x;
+}
+
 // Transaction Management Code
 
 export async function addTransaction(
