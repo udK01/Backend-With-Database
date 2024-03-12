@@ -22,17 +22,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.post("/api/users", async (req, res) => {
-  const { username, password } = req.body;
-  try {
-    const userId = await createUser(username, password);
-    res.status(201).json({ id: userId, username, password });
-  } catch (error) {
-    console.error("Error creating user:", error);
-    res.status(500).json({ error: "Error creating user" });
-  }
-});
-
 app.post("/api/account", async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -40,6 +29,16 @@ app.post("/api/account", async (req, res) => {
     res.status(200).json();
   } catch (error) {
     console.error("Error creating account:", error);
+    res.status(500).json({ error: "Error creating account" });
+  }
+});
+
+app.post("/api/transaction", async (req, res) => {
+  try {
+    await addTransaction();
+    res.status(200).json();
+  } catch (error) {
+    console.error("Error adding transaction:", error);
     res.status(500).json({ error: "Error creating account" });
   }
 });
@@ -78,56 +77,6 @@ app.get("/api/transactions", async (req, res) => {
   }
 });
 
-app.get("/api/users", async (req, res) => {
-  try {
-    const users = await getUsers();
-    res.json(users);
-  } catch (error) {
-    console.error("Error getting users:", error);
-    res.status(500).json({ error: "Error getting users" });
-  }
-});
-
-app.get("/api/users/:id", async (req, res) => {
-  const userId = req.params.id;
-  try {
-    const user = await getUser(userId);
-    if (!user) {
-      res.status(404).json({ error: "User not found" });
-    } else {
-      res.json(user);
-    }
-  } catch (error) {
-    console.error("Error getting user:", error);
-    res.status(500).json({ error: "Error getting user" });
-  }
-});
-
-app.delete("/api/users/:id", async (req, res) => {
-  const userId = req.params.id;
-
-  try {
-    await deleteUser(userId);
-    res.status(200).json({ message: "User deleted successfully" });
-  } catch (error) {
-    console.error("Error deleting user:", error);
-    res.status(500).json({ error: "Error deleting user" });
-  }
-});
-
-app.put("/api/users/:id", async (req, res) => {
-  const userId = req.params.id;
-  const { username, password } = req.body;
-
-  try {
-    await updateUser(userId, username, password);
-    res.status(200).json({ message: "User updated successfully" });
-  } catch (error) {
-    console.error("Error updating user:", error);
-    res.status(500).json({ error: "Error updating user" });
-  }
-});
-
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res
@@ -138,3 +87,64 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}.`);
 });
+
+// app.post("/api/users", async (req, res) => {
+//   const { username, password } = req.body;
+//   try {
+//     const userId = await createUser(username, password);
+//     res.status(201).json({ id: userId, username, password });
+//   } catch (error) {
+//     console.error("Error creating user:", error);
+//     res.status(500).json({ error: "Error creating user" });
+//   }
+// });
+
+// app.get("/api/users", async (req, res) => {
+//   try {
+//     const users = await getUsers();
+//     res.json(users);
+//   } catch (error) {
+//     console.error("Error getting users:", error);
+//     res.status(500).json({ error: "Error getting users" });
+//   }
+// });
+
+// app.get("/api/users/:id", async (req, res) => {
+//   const userId = req.params.id;
+//   try {
+//     const user = await getUser(userId);
+//     if (!user) {
+//       res.status(404).json({ error: "User not found" });
+//     } else {
+//       res.json(user);
+//     }
+//   } catch (error) {
+//     console.error("Error getting user:", error);
+//     res.status(500).json({ error: "Error getting user" });
+//   }
+// });
+
+// app.delete("/api/users/:id", async (req, res) => {
+//   const userId = req.params.id;
+
+//   try {
+//     await deleteUser(userId);
+//     res.status(200).json({ message: "User deleted successfully" });
+//   } catch (error) {
+//     console.error("Error deleting user:", error);
+//     res.status(500).json({ error: "Error deleting user" });
+//   }
+// });
+
+// app.put("/api/users/:id", async (req, res) => {
+//   const userId = req.params.id;
+//   const { username, password } = req.body;
+
+//   try {
+//     await updateUser(userId, username, password);
+//     res.status(200).json({ message: "User updated successfully" });
+//   } catch (error) {
+//     console.error("Error updating user:", error);
+//     res.status(500).json({ error: "Error updating user" });
+//   }
+// });

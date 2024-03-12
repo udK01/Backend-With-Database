@@ -1,0 +1,63 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif;
+  width: 300px;
+  margin: auto;
+  align-items: center;
+}
+
+.container label {
+  width: inherit;
+  font-size: 1.1rem;
+}
+
+.container input {
+  width: inherit;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.btn-container {
+  width: inherit;
+  display: flex;
+  justify-content: space-between;
+}
+
+.options {
+  flex-grow: 1;
+  background: rgb(195, 147, 243);
+  border: solid transparent;
+  padding: 25px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  transition: ease 0.25s;
+}
+
+.options:hover {
+  flex-grow: 10;
+  border-color: rgb(123, 71, 175);
+}
+
+.active {
+  flex-grow: 10;
+  background-color: rgb(123, 71, 175);
+}
+
+.add-btn {
+  width: inherit;
+  font-size: 1.5rem;
+  color: rgb(24, 117, 24);
+  padding: 10px;
+  background: none;
+  border: none;
+}
+
+.transfer-btn {
+  width: inherit;
+  font-size: 1.5rem;
+  color: rgb(123, 71, 175);
+  padding: 10px;
+  background: none;
+  border: none;
+}

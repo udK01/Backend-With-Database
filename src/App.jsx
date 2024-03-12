@@ -3,6 +3,7 @@ import History from "./components/UserHistory/History";
 import Transactions from "./TransactionHistory/Transactions";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
+import InputField from "./components/InputField/InputField";
 
 export default function App() {
   const [user, setUser] = useState([]);
@@ -31,6 +32,7 @@ export default function App() {
       ) : (
         <Transactions user={user[0]} onLogout={handleLogout} />
       )}
+      <InputField />
     </>
   );
 }
