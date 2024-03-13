@@ -9,6 +9,7 @@ export default function App() {
   const [user, setUser] = useState([]);
   const [rememberUser, setRememberUser] = useState(false);
   const [currentForm, setCurrentForm] = useState("Login");
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     if (user.length > 0) {
@@ -25,6 +26,10 @@ export default function App() {
 
   const toggleForm = (formName) => {
     setCurrentForm(formName);
+  };
+
+  const toggleRefresh = () => {
+    setRefresh(!refresh);
   };
 
   function handleLogin(userData, stayLoggedIn) {
@@ -46,9 +51,13 @@ export default function App() {
           <Register onFormSwitch={toggleForm} />
         )
       ) : (
-        <Transactions user={user[0]} onLogout={handleLogout} />
+        <Transactions
+          user={user[0]}
+          onLogout={handleLogout}
+          refresh={refresh}
+        />
       )}
-      <InputField />
+      <InputField user={user} onRefresh={toggleRefresh} />
     </>
   );
 }

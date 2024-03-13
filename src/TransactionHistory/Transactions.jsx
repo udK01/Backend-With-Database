@@ -14,7 +14,7 @@ export default function Transactions(props) {
       .catch((error) => {
         console.error("Error fetching transactions:", error);
       });
-  }, []);
+  }, [props.refresh]);
 
   return (
     <>

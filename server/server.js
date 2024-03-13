@@ -34,9 +34,25 @@ app.post("/api/account", async (req, res) => {
 });
 
 app.post("/api/transaction", async (req, res) => {
+  const {
+    account_number,
+    transaction_type,
+    transaction_text,
+    transaction_amount,
+    transaction_date,
+    transaction_source,
+  } = req.body;
+
   try {
-    await addTransaction();
-    res.status(200).json();
+    await addTransaction(
+      account_number,
+      transaction_type,
+      transaction_text,
+      transaction_amount,
+      transaction_date,
+      transaction_source
+    );
+    res.status(200).json(`Transaction Added Successfully!`);
   } catch (error) {
     console.error("Error adding transaction:", error);
     res.status(500).json({ error: "Error creating account" });
