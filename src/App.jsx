@@ -55,6 +55,7 @@ export default function App() {
           user={user[0]}
           onLogout={handleLogout}
           refresh={refresh}
+          onRefresh={toggleRefresh}
         />
       )}
       <InputField user={user} onRefresh={toggleRefresh} />

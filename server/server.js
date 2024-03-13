@@ -93,6 +93,18 @@ app.get("/api/transactions", async (req, res) => {
   }
 });
 
+app.delete("/api/transaction/:id", async (req, res) => {
+  const transaction_id = req.params.id;
+
+  try {
+    await deleteTransaction(transaction_id);
+    res.status(200).json({ message: "Transaction deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting transaction:", error);
+    res.status(500).json({ error: "Error deleting transaction" });
+  }
+});
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res

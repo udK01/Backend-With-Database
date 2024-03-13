@@ -16,6 +16,21 @@ export default function Transactions(props) {
       });
   }, [props.refresh]);
 
+  function deleteTransaction(transaction_id) {
+    axios
+      .delete(`/api/transaction/${transaction_id}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then(() => {
+        props.onRefresh();
+      })
+      .catch((error) => {
+        console.log(`Failed to delete transaction:`, error);
+      });
+  }
+
   return (
     <>
       <div className={styles["container"]}>
@@ -50,6 +65,12 @@ export default function Transactions(props) {
               </p>
               <p className={styles["cell"]}>
                 Transaction Source: {transaction.transaction_source}
+              </p>
+              <p
+                className={`${styles.cell} ${styles.delete}`}
+                onClick={() => deleteTransaction(transaction.transaction_id)}
+              >
+                Delete
               </p>
             </div>
           ))

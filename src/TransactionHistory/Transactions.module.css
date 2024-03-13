@@ -25,6 +25,12 @@
   padding: 10px;
 }
 
+.delete {
+  background-color: rgb(201, 37, 37);
+  margin-left: 50px;
+  color: white;
+}
+
 .logout {
   background-color: rgb(201, 37, 37);
   color: white;
