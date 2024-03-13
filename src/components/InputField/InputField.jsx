@@ -24,16 +24,18 @@ export default function InputField(props) {
     return formattedDate;
   }
 
-  function addTransaction() {
-    const textInput = document.getElementById("amount-text").value;
-    const amountInput = document.getElementById("amount").value;
+  function addTransaction(type = "Add", text = "", amount = 0) {
+    const textToUse =
+      text === "" ? document.getElementById("amount-text").value : text;
+    const amountToUse =
+      amount === 0 ? document.getElementById("amount").value : amount;
 
-    if (textInput !== "" && amountInput !== "") {
+    if (textToUse !== "" && amountToUse !== "") {
       const transactionData = {
         account_number: props.user[0].account_number,
-        transaction_type: "Add",
-        transaction_text: textInput,
-        transaction_amount: amountInput,
+        transaction_type: type,
+        transaction_text: textToUse,
+        transaction_amount: amountToUse,
         transaction_date: getFormattedDate(),
         transaction_source: props.user[0].username,
       };
@@ -60,7 +62,7 @@ export default function InputField(props) {
     const textInput = document.getElementById("amount-text").value;
     const amountInput = document.getElementById("amount").value;
 
-    if (await accountExists(account_number)) {
+    if ((await accountExists(account_number)) && amountInput > 0) {
       if (textInput !== "" && amountInput !== "") {
         const transactionData = {
           account_number: account_number,
@@ -77,6 +79,7 @@ export default function InputField(props) {
             },
           })
           .then(() => {
+            addTransaction("Transfer", textInput, amountInput * -1);
             document.getElementById("account-number").value = "";
             document.getElementById("amount-text").value = "";
             document.getElementById("amount").value = "";
@@ -87,7 +90,7 @@ export default function InputField(props) {
           });
       }
     } else {
-      console.error("You must only transfer to existing accounts!");
+      console.error("Incorrect Transfer!");
     }
   }
 
@@ -143,7 +146,7 @@ export default function InputField(props) {
       <label htmlFor="amount">Amount:</label>
       <input id="amount" type="number" />
       {mode === "Add" ? (
-        <button className={styles["add-btn"]} onClick={addTransaction}>
+        <button className={styles["add-btn"]} onClick={() => addTransaction()}>
           Add
         </button>
       ) : (
