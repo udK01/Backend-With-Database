@@ -89,6 +89,14 @@ export async function getAccount(username, password) {
   return x;
 }
 
+export async function getAccountByAccountNumber(account_number) {
+  const [x] = await db.query(
+    "SELECT * FROM Accounts WHERE account_number = ?",
+    [account_number]
+  );
+  return x;
+}
+
 export async function getAccountNames() {
   const [x] = await db.query("SELECT username FROM Accounts");
   return x;

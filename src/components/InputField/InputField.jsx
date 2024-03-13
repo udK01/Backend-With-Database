@@ -55,9 +55,57 @@ export default function InputField(props) {
     }
   }
 
-  function addTransfer() {
-    // Logic to add transfer
-    console.log("Transfer added");
+  async function addTransfer() {
+    const account_number = document.getElementById("account-number").value;
+    const textInput = document.getElementById("amount-text").value;
+    const amountInput = document.getElementById("amount").value;
+
+    if (await accountExists(account_number)) {
+      if (textInput !== "" && amountInput !== "") {
+        const transactionData = {
+          account_number: account_number,
+          transaction_type: "Transfer",
+          transaction_text: textInput,
+          transaction_amount: amountInput,
+          transaction_date: getFormattedDate(),
+          transaction_source: props.user[0].username,
+        };
+        axios
+          .post("/api/transaction", transactionData, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then(() => {
+            document.getElementById("account-number").value = "";
+            document.getElementById("amount-text").value = "";
+            document.getElementById("amount").value = "";
+            props.onRefresh();
+          })
+          .catch((error) => {
+            console.error("Failed to transfer:", error);
+          });
+      }
+    } else {
+      console.error("You must only transfer to existing accounts!");
+    }
+  }
+
+  async function accountExists(account_number) {
+    try {
+      const response = await axios.get("/api/account_number", {
+        params: {
+          account_number: account_number,
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data.length > 0;
+    } catch (error) {
+      console.error("Failed to get account:", error);
+      return false;
+    }
   }
 
   return (

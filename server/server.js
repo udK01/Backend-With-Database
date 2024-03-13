@@ -8,6 +8,7 @@ import {
   getUser,
   createAccount,
   getAccount,
+  getAccountByAccountNumber,
   getAccountNames,
   addTransaction,
   getTransaction,
@@ -71,10 +72,21 @@ app.get("/api/account", async (req, res) => {
   }
 });
 
-app.get("/api/accountNames", async (req, res) => {
+app.get("/api/account_number", async (req, res) => {
+  const account_number = req.query.account_number;
   try {
-    const accountNames = await getAccountNames();
-    res.json(accountNames);
+    const account = await getAccountByAccountNumber(account_number);
+    res.status(200).json(account);
+  } catch (error) {
+    console.error("Failed to get account:", error);
+    res.status(500).json({ error: "Error getting account" });
+  }
+});
+
+app.get("/api/account_names", async (req, res) => {
+  try {
+    const account_names = await getAccountNames();
+    res.json(account_names);
   } catch (error) {
     console.error("Error getting account names:", error);
     res.status(500).json({ error: "Error getting account names" });

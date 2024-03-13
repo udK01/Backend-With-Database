@@ -82,7 +82,7 @@ export default function Register(props) {
 
   function userExists(username) {
     return axios
-      .get("/api/accountNames")
+      .get("/api/account_names")
       .then((response) => {
         const existingUsers = response.data;
         for (const existingUser of existingUsers) {
